@@ -44,3 +44,9 @@ about/*/*/*.brf
 
 log*
 libfiles
+
+# gaocegege
+build.sbt
+config.xml
+about/
+.java-version
