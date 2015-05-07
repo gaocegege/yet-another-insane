@@ -308,7 +308,13 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
 
   def dumpCFG(cfg: FunctionCFG, dest: String) {
     reporter.debug("Dumping CFG to "+dest+"...")
+    // reporter.debug("CFG: " + cfg)
     new CFGDotConverter(cfg, "CFG of "+cfg.symbol.fullName).writeFile(dest)
+  }
+
+  def dumpICFG(cfgList: List[FunctionCFG], dest: String) {
+    // todo
+    
   }
 
   class CFGDotConverter(cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
@@ -333,6 +339,8 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
 
       le.label match {
         case aam: CFGTrees.AssignApplyMeth =>
+          // call is a AssignApplyMeth
+          println("gaocegege: AssignApplyMeth: " + le)
           res append DotHelpers.arrow(le.v1.dotName, le.dotName)
           res append DotHelpers.arrow(le.dotName, le.v2.dotName)
           var methDesc = le.label.toString+"\\n("+aam.meth.fullName+")"
@@ -344,11 +352,13 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
           res append DotHelpers.box(le.dotName, methDesc)
 
         case bb: CFGTrees.BasicBlock =>
+          println("gaocegege: BasicBlock: " + le)
           res append DotHelpers.arrow(le.v1.dotName, le.dotName)
           res append DotHelpers.arrow(le.dotName, le.v2.dotName)
           res append DotHelpers.box(le.dotName, bb.stmts.map(_.toString).mkString("\\n\\n"))
 
         case e: CFGTrees.Effect =>
+          println("gaocegege: Effect: " + le)
           val id = e.uniqueID.ids.map{ case (i,n) => i+"_"+n }.mkString("")
 
           val clusterName = "cluster"+id;
@@ -372,7 +382,8 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
           res append "}\n"
 
           res append DotHelpers.arrow(le.v1.dotName, invisName, "lhead="+clusterName :: Nil)
-          res append DotHelpers.arrow(invisName, le.v2.dotName, "ltail="+clusterName :: Nil)
+          res append DotHelpers.arrow(invisName, le.v2.dotName, "ltail="+clusterName :: Nil)     
+
         case _ =>
           res append DotHelpers.arrow(le.v1.dotName, le.dotName)
           res append DotHelpers.arrow(le.dotName, le.v2.dotName)

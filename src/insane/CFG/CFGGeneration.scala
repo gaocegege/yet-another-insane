@@ -32,7 +32,8 @@ trait CFGGeneration extends CFGTreesDef { self: AnalysisComponent =>
       } else {
         for(fun <- declaredFunctions.values) {
           val cfg = new CFGConverterFromAST(fun).getCFG
-
+          // println("gaocegege: " + cfg)
+          // from this we can get all the cfg for the function
           fun.setCFG(cfg)
         }
       }
