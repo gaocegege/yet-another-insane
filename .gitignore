@@ -50,3 +50,4 @@ build.sbt
 config.xml
 about/
 .java-version
+project/build.properties
