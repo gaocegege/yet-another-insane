@@ -320,44 +320,13 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
     new ICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName).writeFile(dest)
   }
 
-  class SubICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
+  class AbstractCFGConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
     import utils.DotHelpers
 
-    // fxxk the scala? what's wrong?
-    var entry: CFGVertex = CFGVertex("", -1)
-    var exit: CFGVertex = CFGVertex("", -1)
-
-    override def toString: String = {
-      val res = new StringBuffer()
-
-      res append "subgraph D {\n"
-      res append " label=\""+DotHelpers.escape(title)+"\"\n"
-
-      if (orientation == Orentitations.Horizontal) {
-        res append " rankdir=\"LR\"\n"
-      }
-
-      drawGraph(res)
-
-      res append "}\n"
-
-      res.toString
-    }
-
-    def getEntry: String = {
-      entry.dotName
-    }
-
-    def getExit: String = {
-      exit.dotName
-    }
-    
     override def vertexToString(res: StringBuffer, v: CFGVertex) {
         if (v == cfg.entry) {
-            entry = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"green\"];\n")
         } else if (v == cfg.exit) {
-            exit = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"red\"];\n")
         } else {
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name+"#"+v.id)+"\"];\n")
@@ -442,94 +411,53 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
     }
   }
 
-  class ICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
+  class SubICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _prefix) {
     import utils.DotHelpers
-    
+
+    // fxxk the scala? what's wrong?
+    var entry: CFGVertex = CFGVertex("", -1)
+    var exit: CFGVertex = CFGVertex("", -1)
+
+    override def toString: String = {
+      val res = new StringBuffer()
+
+      res append "subgraph D {\n"
+      res append " label=\""+DotHelpers.escape(title)+"\"\n"
+
+      if (orientation == Orentitations.Horizontal) {
+        res append " rankdir=\"LR\"\n"
+      }
+
+      drawGraph(res)
+
+      res append "}\n"
+
+      res.toString
+    }
+
+    def getEntry: String = {
+      entry.dotName
+    }
+
+    def getExit: String = {
+      exit.dotName
+    }
+
     override def vertexToString(res: StringBuffer, v: CFGVertex) {
         if (v == cfg.entry) {
+            entry = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"green\"];\n")
         } else if (v == cfg.exit) {
+            exit = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"red\"];\n")
         } else {
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name+"#"+v.id)+"\"];\n")
         }
     }
 
-    override def edgeToString(res: StringBuffer, le: CFGEdge[CFGTrees.Statement]) {
+  }
 
-      le.label match {
-        case aam: CFGTrees.AssignApplyMeth =>
-          // call is a AssignApplyMeth
-          // aam.meth.fullName is the func name
-          println("gaocegege: AssignApplyMeth: " + aam.meth.fullName)
-          var flag = false
-          var recurConverter: SubICFGDotConverter = new SubICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName)
-          for( cfgBuf <- cfgList) {
-            if (cfgBuf.symbol.fullName == aam.meth.fullName) {
-              flag = true
-              println("gaocegege: AssignApplyMeth: Bingo: " + aam.meth.fullName)
-              recurConverter = new SubICFGDotConverter(cfgList, cfgBuf, "ICFG of " + cfgBuf.symbol.fullName)
-              println("recurRes: " + recurConverter.toString)
-            }
-          }
-          if (flag == false) {
-            res append DotHelpers.arrow(le.v1.dotName, le.dotName)
-            res append DotHelpers.arrow(le.dotName, le.v2.dotName)
-          }
-          else {
-            res append recurConverter.toString
-            res append DotHelpers.arrow(le.v1.dotName, le.dotName)
-            res append DotHelpers.arrow(le.dotName, recurConverter.getEntry)
-            res append DotHelpers.arrow(recurConverter.getExit, le.v2.dotName)
-          }
-
-          var methDesc = le.label.toString+"\\n("+aam.meth.fullName+")"
-
-          if (!aam.excludedSymbols.isEmpty) {
-            methDesc += "\\n"+aam.excludedSymbols.map("- "+_.fullName).mkString("\\n")
-          }
-
-          res append DotHelpers.box(le.dotName, methDesc)
-
-        case bb: CFGTrees.BasicBlock =>
-          println("gaocegege: BasicBlock: " + le)
-          res append DotHelpers.arrow(le.v1.dotName, le.dotName)
-          res append DotHelpers.arrow(le.dotName, le.v2.dotName)
-          res append DotHelpers.box(le.dotName, bb.stmts.map(_.toString).mkString("\\n\\n"))
-
-        case e: CFGTrees.Effect =>
-          println("gaocegege: Effect: " + le)
-          val id = e.uniqueID.ids.map{ case (i,n) => i+"_"+n }.mkString("")
-
-          val clusterName = "cluster"+id;
-          val invisName   = "invis"+id;
-
-          res append "subgraph "+clusterName+" {\n"
-          res append "  label=\""+DotHelpers.escape(e.name)+"\";\n"
-          res append "  color=\"gray\";\n"
-
-          res append "  "+invisName+" [color=white, fontcolor=white]; \n"
-
-          if (e.env.category.isBottom) {
-            res append "  bottom"+id+" [label=\"(Bottom)\", color=white]; "
-          } else if (e.env.category.isTop) {
-            res append "  top"+id+" [label=\"(Top)\", color=white]; "
-          } else {
-            val ptdot = new PointToGraphs.PTDotConverter(e.env, "Effects", "x"+id+prefix)
-            ptdot.drawGraph(res)
-          }
-
-          res append "}\n"
-
-          res append DotHelpers.arrow(le.v1.dotName, invisName, "lhead="+clusterName :: Nil)
-          res append DotHelpers.arrow(invisName, le.v2.dotName, "ltail="+clusterName :: Nil)     
-
-        case _ =>
-          res append DotHelpers.arrow(le.v1.dotName, le.dotName)
-          res append DotHelpers.arrow(le.dotName, le.v2.dotName)
-          res append DotHelpers.box(le.dotName, le.label.toString)
-      }
-    }
+  class ICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _prefix) {
   }
 
   class CFGDotConverter(cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
