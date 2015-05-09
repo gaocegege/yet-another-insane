@@ -26,7 +26,7 @@ trait CFGGeneration extends CFGTreesDef { self: AnalysisComponent =>
 
     def run() {
       scalaPrimitives.init()
-
+      var cfgList = scala.collection.mutable.ListBuffer.empty[FunctionCFG]
       if (settings.onDemandMode) {
         reporter.msg("Skipping batch CFG generation")
       } else {
@@ -35,6 +35,12 @@ trait CFGGeneration extends CFGTreesDef { self: AnalysisComponent =>
           // println("gaocegege: " + cfg)
           // from this we can get all the cfg for the function
           fun.setCFG(cfg)
+
+          cfgList += cfg
+        }
+
+        for( cfgbuf <- cfgList) {
+          dumpICFG(cfgList.toList, cfgbuf, cfgbuf.symbol.fullName + "-icfg.dot")
         }
       }
     }
