@@ -2,6 +2,22 @@
 
 YAI是基于[INSANE](https://github.com/colder/insane)的，过程间Control Flow Graph生成器。给定一个scala文件，可以对其进行静态分析，产生相应的过程间控制流图。
 
+## Use
+
+可以使用`./workscripts/`下的脚本进行生成。
+
+### 生成icfg的dot文件
+
+	./workscripts/auto.sh <your scala file>
+
+### 根据dot文件进行绘制
+
+	./workscripts/draw2png.sh <your dot file>
+
+### clean
+
+	./workscripts/clear.sh
+
 ## TODO and BUGLIST
 
 1. 如果有print函数，就会报错，不知道使用其他的内置函数会不会有同样的问题，待测试
