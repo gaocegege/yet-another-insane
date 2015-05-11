@@ -46,6 +46,7 @@ log*
 libfiles
 
 # gaocegege
+
 build.sbt
 config.xml
 about/
