@@ -457,6 +457,7 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
 
   }
 
+  // fxxk the design pattern
   class ICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _prefix) {
   }
 
