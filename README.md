@@ -1,3 +1,8 @@
+# TODO and BUGLIST
+
+1. 如果有print函数，就会报错，不知道使用其他的内置函数会不会有同样的问题，待测试
+2. 希望可以添加函数框来表明调用的是什么函数，这样图的可读性会好很多
+
 # INSANE
 Static program analysis techniques working on object-oriented languages require
 precise knowledge of the aliasing relation between variables. This knowledge is
