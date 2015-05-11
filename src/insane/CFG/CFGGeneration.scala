@@ -925,9 +925,10 @@ trait CFGGeneration extends CFGTreesDef { self: AnalysisComponent =>
 
             stack push to
           case LOAD_MODULE(module) =>
-            val value = stack.pop
-            val index = stack.pop
-            val array = stack.pop
+            // what?
+            // val value = stack.pop
+            // val index = stack.pop
+            // val array = stack.pop
             stack push new CFG.ObjRef(module, module.tpe)
 
           case STORE_THIS(kind) =>
