@@ -1,6 +1,8 @@
 class testIntfunc {
-	def a() = {
+	def a(): Int = {
 		// println("aa")
-		1
+		// var testlambda = (x: Int) => (y: Int) => x + y
+		// testlambda(1)(2)
+		a()
 	}
 }
