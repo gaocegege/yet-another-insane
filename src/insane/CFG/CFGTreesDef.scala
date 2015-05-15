@@ -332,6 +332,9 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
 
     var numberOfVertex = _numberOfVertex
     var numberOfEdge = _numberOfEdge
+    // fxxk the scala, have to initialize?
+    var entry: CFGVertex = CFGVertex("", -1)
+    var exit: CFGVertex = CFGVertex("", -1)
 
     def getNumberOfVertex() = {
       numberOfVertex
@@ -341,11 +344,21 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
       numberOfEdge
     }
 
+    def getEntry: String = {
+      entry.dotName
+    }
+
+    def getExit: String = {
+      exit.dotName
+    }
+
     override def vertexToString(res: StringBuffer, v: CFGVertex) {
         numberOfVertex = numberOfVertex + 1
         if (v == cfg.entry) {
+            entry = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"green\"];\n")
         } else if (v == cfg.exit) {
+            exit = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"red\"];\n")
         } else {
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name+"#"+v.id)+"\"];\n")
@@ -357,22 +370,27 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
       numberOfEdge = numberOfEdge + 1
       le.label match {
         case aam: CFGTrees.AssignApplyMeth =>
-          // call is a AssignApplyMeth
           // aam.meth.fullName is the func name
-          var flag = false
+          var flag = 0
           // tricky, i don't know how to do, so I have to construct the obj first, and waste time and memory
           var recurConverter: SubICFGDotConverter = new SubICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName, 0, 0)
           for( cfgBuf <- cfgList) {
-            if (cfgBuf.symbol.fullName == aam.meth.fullName) {
-              flag = true
+            if (aam.meth.fullName == cfg.symbol.fullName) {
+              // show that it is a recursive call
+              flag = 2
+              reporter.cfgInfo(cfg.symbol.fullName)
+            }
+            else if (cfgBuf.symbol.fullName == aam.meth.fullName) {
+              // show that it is a normal call
+              flag = 1
               recurConverter = new SubICFGDotConverter(cfgList, cfgBuf, "ICFG of " + cfgBuf.symbol.fullName, numberOfVertex, numberOfEdge)
             }
           }
-          if (flag == false) {
+          if (flag == 0) {
             res append DotHelpers.arrow(le.v1.dotName, le.dotName)
             res append DotHelpers.arrow(le.dotName, le.v2.dotName)
           }
-          else {
+          else if (flag == 1) {
             res append recurConverter.toString
             res append DotHelpers.arrow(le.v1.dotName, le.dotName)
             res append DotHelpers.arrow(le.dotName, recurConverter.getEntry)
@@ -381,6 +399,12 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
             // update the recursive number of vertex and edge
             numberOfVertex = recurConverter.getNumberOfVertex()
             numberOfEdge = recurConverter.getNumberOfEdge()
+          }
+          else {
+            // bug: will get many errors but can get the ideal result
+            res append DotHelpers.arrow(le.v1.dotName, le.dotName)
+            res append DotHelpers.arrow(le.dotName, le.v2.dotName)
+            res append DotHelpers.arrow(le.dotName, getEntry)
           }
 
           var methDesc = le.label.toString+"\\n("+aam.meth.fullName+")"
@@ -433,10 +457,6 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
   class SubICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _numberOfVertex: Int, _numberOfEdge: Int, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _numberOfVertex, _numberOfEdge, _prefix) {
     import utils.DotHelpers
 
-    // fxxk the scala, have to initialize?
-    var entry: CFGVertex = CFGVertex("", -1)
-    var exit: CFGVertex = CFGVertex("", -1)
-
     override def toString: String = {
       val res = new StringBuffer()
 
@@ -452,27 +472,6 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
       res append "}\n"
 
       res.toString
-    }
-
-    def getEntry: String = {
-      entry.dotName
-    }
-
-    def getExit: String = {
-      exit.dotName
-    }
-
-    override def vertexToString(res: StringBuffer, v: CFGVertex) {
-        numberOfVertex = numberOfVertex + 1
-        if (v == cfg.entry) {
-            entry = v
-            res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"green\"];\n")
-        } else if (v == cfg.exit) {
-            exit = v
-            res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"red\"];\n")
-        } else {
-            res append (v.dotName +" [label=\""+DotHelpers.escape(v.name+"#"+v.id)+"\"];\n")
-        }
     }
 
   }

@@ -40,14 +40,15 @@ abstract class AnalysisComponent(pluginInstance: InsanePlugin, val reporter: Rep
 
   val phaseName = pluginInstance.name
 
+  // gaocegege: commment some useless sub phases, then will pass the recursive call
   var subPhases: SubPhases =
     new CodeExtractionPhase   andThen
-    new CFGGenerationPhase    andThen
-    new ClassHierarchyPhase   andThen
-//    new TypeAnalysisPhase     andThen
-    new PointToAnalysisPhase  andThen
-    new ChecksPhase
-    //new PurityAnalysisPhase
+    new CFGGenerationPhase  //  andThen
+//     new ClassHierarchyPhase   andThen
+// //    new TypeAnalysisPhase     andThen
+//     new PointToAnalysisPhase  andThen
+//     new ChecksPhase
+//     //new PurityAnalysisPhase
 
   class AnalysisPhase(prev: Phase) extends StdPhase(prev) {
 
