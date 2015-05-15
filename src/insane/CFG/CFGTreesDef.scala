@@ -315,15 +315,34 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
   }
 
   def dumpICFG(cfgList: List[FunctionCFG], cfg: FunctionCFG, dest: String) {
-    // todo
     reporter.debug("Dumping interprocedural CFG to "+dest+"...")
-    new ICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName).writeFile(dest)
+    reporter.cfgInfo("---ICFG of " + cfg.symbol.fullName + "---")
+    var begin = System.currentTimeMillis
+    var converter = new ICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName, 0, 0)
+    converter.writeFile(dest)
+    var end = System.currentTimeMillis
+    reporter.cfgInfo("The time: " + (end - begin) + "ms")
+    reporter.cfgInfo("The number of vertex: " + converter.getNumberOfVertex())
+    reporter.cfgInfo("The number of edge: " + converter.getNumberOfEdge())
+    reporter.cfgInfo("---")
   }
 
-  class AbstractCFGConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
+  class AbstractCFGConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _numberOfVertex: Int, _numberOfEdge: Int, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
     import utils.DotHelpers
 
+    var numberOfVertex = _numberOfVertex
+    var numberOfEdge = _numberOfEdge
+
+    def getNumberOfVertex() = {
+      numberOfVertex
+    }
+
+    def getNumberOfEdge() = {
+      numberOfEdge
+    }
+
     override def vertexToString(res: StringBuffer, v: CFGVertex) {
+        numberOfVertex = numberOfVertex + 1
         if (v == cfg.entry) {
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"green\"];\n")
         } else if (v == cfg.exit) {
@@ -335,20 +354,18 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
 
     override def edgeToString(res: StringBuffer, le: CFGEdge[CFGTrees.Statement]) {
 
+      numberOfEdge = numberOfEdge + 1
       le.label match {
         case aam: CFGTrees.AssignApplyMeth =>
           // call is a AssignApplyMeth
           // aam.meth.fullName is the func name
-          println("gaocegege: AssignApplyMeth: " + aam.meth.fullName)
           var flag = false
-          // tricky, i don't know how to do.
-          var recurConverter: SubICFGDotConverter = new SubICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName)
+          // tricky, i don't know how to do, so I have to construct the obj first, and waste time and memory
+          var recurConverter: SubICFGDotConverter = new SubICFGDotConverter(cfgList, cfg, "ICFG of " + cfg.symbol.fullName, 0, 0)
           for( cfgBuf <- cfgList) {
             if (cfgBuf.symbol.fullName == aam.meth.fullName) {
               flag = true
-              println("gaocegege: AssignApplyMeth: Bingo: " + aam.meth.fullName)
-              recurConverter = new SubICFGDotConverter(cfgList, cfgBuf, "ICFG of " + cfgBuf.symbol.fullName)
-              println("recurRes: " + recurConverter.toString)
+              recurConverter = new SubICFGDotConverter(cfgList, cfgBuf, "ICFG of " + cfgBuf.symbol.fullName, numberOfVertex, numberOfEdge)
             }
           }
           if (flag == false) {
@@ -360,6 +377,10 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
             res append DotHelpers.arrow(le.v1.dotName, le.dotName)
             res append DotHelpers.arrow(le.dotName, recurConverter.getEntry)
             res append DotHelpers.arrow(recurConverter.getExit, le.v2.dotName)
+
+            // update the recursive number of vertex and edge
+            numberOfVertex = recurConverter.getNumberOfVertex()
+            numberOfEdge = recurConverter.getNumberOfEdge()
           }
 
           var methDesc = le.label.toString+"\\n("+aam.meth.fullName+")"
@@ -371,13 +392,11 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
           res append DotHelpers.box(le.dotName, methDesc)
 
         case bb: CFGTrees.BasicBlock =>
-          println("gaocegege: BasicBlock: " + le)
           res append DotHelpers.arrow(le.v1.dotName, le.dotName)
           res append DotHelpers.arrow(le.dotName, le.v2.dotName)
           res append DotHelpers.box(le.dotName, bb.stmts.map(_.toString).mkString("\\n\\n"))
 
         case e: CFGTrees.Effect =>
-          println("gaocegege: Effect: " + le)
           val id = e.uniqueID.ids.map{ case (i,n) => i+"_"+n }.mkString("")
 
           val clusterName = "cluster"+id;
@@ -411,10 +430,10 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
     }
   }
 
-  class SubICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _prefix) {
+  class SubICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _numberOfVertex: Int, _numberOfEdge: Int, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _numberOfVertex, _numberOfEdge, _prefix) {
     import utils.DotHelpers
 
-    // fxxk the scala? what's wrong?
+    // fxxk the scala, have to initialize?
     var entry: CFGVertex = CFGVertex("", -1)
     var exit: CFGVertex = CFGVertex("", -1)
 
@@ -444,6 +463,7 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
     }
 
     override def vertexToString(res: StringBuffer, v: CFGVertex) {
+        numberOfVertex = numberOfVertex + 1
         if (v == cfg.entry) {
             entry = v
             res append (v.dotName +" [label=\""+DotHelpers.escape(v.name)+"\", style=filled, color=\"green\"];\n")
@@ -458,7 +478,7 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
   }
 
   // fxxk the design pattern
-  class ICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _prefix) {
+  class ICFGDotConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _numberOfVertex: Int, _numberOfEdge: Int, _prefix: String = "") extends AbstractCFGConverter(cfgList, cfg, _title, _numberOfVertex, _numberOfEdge, _prefix) {
   }
 
   class CFGDotConverter(cfg: FunctionCFG, _title: String, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {

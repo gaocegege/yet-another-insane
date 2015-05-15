@@ -25,6 +25,8 @@ object Reporters {
           Console.BLUE+Console.BOLD+typ.title+Console.RESET
         case DebugMsg =>
           typ.title
+        case CfgInfoMsg => 
+          Console.GREEN+Console.BOLD+typ.title+Console.RESET
       }
     }
   }
@@ -65,6 +67,10 @@ object Reporters {
 
   case object DebugMsg extends MsgType {
     val title = "debug"
+  }
+
+  case object CfgInfoMsg extends MsgType {
+    val title = "CFG-Info"
   }
 
   final case class MsgLines(lines: Seq[String]);
@@ -340,6 +346,9 @@ object Reporters {
 
     def debug(m: MsgLines, optPos: Option[Position] = None) =
       printMessage(Msg(m.lines, DebugMsg), optPos)
+
+    def cfgInfo(m: MsgLines, optPos: Option[Position] = None) =
+      printMessage(Msg(m.lines, CfgInfoMsg), optPos)
 
     def warn(m: MsgLines,  optPos: Option[Position] = None) =
       printMessage(Msg(m.lines, WarningMsg), optPos)
