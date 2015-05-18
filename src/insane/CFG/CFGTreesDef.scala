@@ -378,7 +378,7 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
             if (aam.meth.fullName == cfg.symbol.fullName) {
               // show that it is a recursive call
               flag = 2
-              reporter.cfgInfo(cfg.symbol.fullName)
+              // reporter.cfgInfo(cfg.symbol.fullName)
             }
             else if (cfgBuf.symbol.fullName == aam.meth.fullName) {
               // show that it is a normal call
