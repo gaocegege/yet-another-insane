@@ -2,7 +2,6 @@ bin
 lib_managed
 project/boot
 project/target
-scalac-insane
 runconfig.xml
 *.dot
 *.ps

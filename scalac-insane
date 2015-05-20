@@ -1,0 +1,8 @@
+#!/bin/bash
+SCALACLASSPATH="/Users/gaoce/Projects/GitHub/insane/target/scala-2.10/classes:/Users/gaoce/Programs/scala-2.10.5/lib/scala-compiler.jar:/Users/gaoce/Projects/GitHub/insane/lib/ant.jar:/Users/gaoce/Programs/scala-2.10.5/lib/scala-library.jar:/Users/gaoce/.ivy2/cache/com.h2database/h2/jars/h2-1.2.127.jar:/Users/gaoce/.ivy2/cache/mysql/mysql-connector-java/jars/mysql-connector-java-5.1.15.jar:/Users/gaoce/Programs/scala-2.10.5/lib/scala-compiler.jar:/Users/gaoce/Programs/scala-2.10.5/lib/scala-library.jar:/Users/gaoce/Programs/scala-2.10.5/lib/scala-reflect.jar"
+
+SCALABOOTCLASSPATH="/Users/gaoce/Programs/scala-2.10.5/lib/scala-library.jar:/Users/gaoce/Programs/scala-2.10.5/lib/scala-library.jar"
+
+java -Xmx4G -Xms1024M -classpath ${SCALACLASSPATH} -Dscala.home="$SCALA_HOME" -Dscala.usejavacp=true \
+    scala.tools.nsc.MainGenericRunner -classpath ${SCALACLASSPATH} \
+        insane.Main -bootclasspath ${SCALABOOTCLASSPATH} -classpath /dev/null $@
