@@ -39,9 +39,20 @@ trait CFGGeneration extends CFGTreesDef { self: AnalysisComponent =>
           cfgList += cfg
         }
 
+        var numOfVertex = 0
+        var numOfEdge = 0
+        var time : Long = 0
         for( cfgbuf <- cfgList) {
-          dumpICFG(cfgList.toList, cfgbuf, cfgbuf.symbol.fullName + "-icfg.dot")
+          val lstBuf: Tuple3[Int, Int, Long] = dumpICFG(cfgList.toList, cfgbuf, cfgbuf.symbol.fullName + "-icfg.dot")
+          numOfVertex = numOfVertex + lstBuf._1
+          numOfEdge = numOfEdge + lstBuf._2
+          time = time + lstBuf._3
         }
+        reporter.cfgInfo("---Stat---")
+        reporter.cfgInfo("The total number of Vertex: " + numOfVertex)
+        reporter.cfgInfo("The total number of Edge: " + numOfEdge)
+        reporter.cfgInfo("The total time of CFGGeneration: " + time + "ms")
+        reporter.cfgInfo("---Stat end---")
       }
     }
   }

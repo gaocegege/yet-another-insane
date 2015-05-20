@@ -314,7 +314,7 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
     new CFGDotConverter(cfg, "CFG of "+cfg.symbol.fullName).writeFile(dest)
   }
 
-  def dumpICFG(cfgList: List[FunctionCFG], cfg: FunctionCFG, dest: String) {
+  def dumpICFG(cfgList: List[FunctionCFG], cfg: FunctionCFG, dest: String) : Tuple3[Int, Int, Long] = {
     reporter.debug("Dumping interprocedural CFG to "+dest+"...")
     reporter.cfgInfo("---ICFG of " + cfg.symbol.fullName + "---")
     var begin = System.currentTimeMillis
@@ -325,6 +325,7 @@ trait CFGTreesDef extends ASTBindings { self: AnalysisComponent =>
     reporter.cfgInfo("The number of vertex: " + converter.getNumberOfVertex())
     reporter.cfgInfo("The number of edge: " + converter.getNumberOfEdge())
     reporter.cfgInfo("---")
+    return Tuple3(converter.getNumberOfVertex(), converter.getNumberOfEdge(), (end - begin))
   }
 
   class AbstractCFGConverter(cfgList: List[FunctionCFG], cfg: FunctionCFG, _title: String, _numberOfVertex: Int, _numberOfEdge: Int, _prefix: String = "") extends DotConverter(cfg.graph, _title, _prefix) {
