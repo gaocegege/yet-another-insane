@@ -1,0 +1,173 @@
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcF$sp---
+CFG-Info: The time: 10ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$1.<init>-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$1.<init>---
+CFG-Info: The time: 4ms
+CFG-Info: The number of vertex: 4
+CFG-Info: The number of edge: 3
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcZ$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcZ$sp---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$SuspImpl.maybeValue_$eq-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$SuspImpl.maybeValue_$eq---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 2
+CFG-Info: The number of edge: 1
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcB$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcB$sp---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib.<init>-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib.<init>---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 4
+CFG-Info: The number of edge: 3
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$SuspImpl.toString-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$SuspImpl.toString---
+CFG-Info: The time: 6ms
+CFG-Info: The number of vertex: 15
+CFG-Info: The number of edge: 14
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcI$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcI$sp---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$2.apply-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$2.apply---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 5
+CFG-Info: The number of edge: 4
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$1.apply$mcI$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$1.apply$mcI$sp---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 4
+CFG-Info: The number of edge: 3
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcS$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcS$sp---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcV$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcV$sp---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation.main-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation.main---
+CFG-Info: The time: 34ms
+CFG-Info: The number of vertex: 68
+CFG-Info: The number of edge: 58
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib.delay-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib.delay---
+CFG-Info: The time: 5ms
+CFG-Info: The number of vertex: 13
+CFG-Info: The number of edge: 10
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$2.apply-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$2.apply---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$SuspImpl.maybeValue-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$SuspImpl.maybeValue---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 2
+CFG-Info: The number of edge: 1
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.toString-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.toString---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcD$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcD$sp---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$SuspImpl.apply-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$SuspImpl.apply---
+CFG-Info: The time: 8ms
+CFG-Info: The number of vertex: 22
+CFG-Info: The number of edge: 20
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib.force-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib.force---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.<init>-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.<init>---
+CFG-Info: The time: 11ms
+CFG-Info: The number of vertex: 5
+CFG-Info: The number of edge: 4
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$1.apply-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$1.apply---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 7
+CFG-Info: The number of edge: 5
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$1.apply-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$1.apply---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 4
+CFG-Info: The number of edge: 3
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation.<init>-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation.<init>---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 4
+CFG-Info: The number of edge: 3
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$SuspImpl.<init>-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$SuspImpl.<init>---
+CFG-Info: The time: 3ms
+CFG-Info: The number of vertex: 9
+CFG-Info: The number of edge: 7
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcJ$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcJ$sp---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyEvaluation$$anonfun$2.<init>-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyEvaluation$$anonfun$2.<init>---
+CFG-Info: The time: 2ms
+CFG-Info: The number of vertex: 4
+CFG-Info: The number of edge: 3
+CFG-Info: ---
+debug  : Dumping interprocedural CFG to examples.lazyLib$Susp.apply$mcC$sp-icfg.dot...
+CFG-Info: ---ICFG of examples.lazyLib$Susp.apply$mcC$sp---
+CFG-Info: The time: 1ms
+CFG-Info: The number of vertex: 3
+CFG-Info: The number of edge: 2
+CFG-Info: ---
+CFG-Info: ---Total Stat---
+CFG-Info: The total number of Vertex: 208
+CFG-Info: The total number of Edge: 166
+CFG-Info: The total time of CFGGeneration: 111ms
+CFG-Info: ---Total Stat end---
+info   : Finished (251ms)
