@@ -2,6 +2,30 @@
 
 YAI是基于[INSANE](https://github.com/colder/insane)的，过程间Control Flow Graph生成器。给定一个scala文件，可以对其进行静态分析，产生相应的过程间控制流图。
 
+## 示例
+
+### 代码
+
+	object Hello {
+		def myPrint(i:String) = {
+			print(i)
+		}
+		def hello() = {
+			var myname = "gaocegege"
+			if (myname == "gaocegege"){
+				myPrint(myname)
+			}
+
+		}
+	}
+
+### ICFG
+
+<figure>
+	<img src="./outputs/Hello.hello-icfg.dot.png" alt="example" height="500" width="500">
+	<figcaption>示例</figcaption>
+</figure>
+
 ## Use
 
 可以使用`./workscripts/`下的脚本进行生成。
