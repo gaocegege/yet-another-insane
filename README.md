@@ -22,8 +22,7 @@ YAI是基于[INSANE](https://github.com/colder/insane)的，过程间Control Flo
 ### ICFG
 
 <figure>
-	<img src="./outputs/Hello.hello-icfg.dot.png" alt="example" height="500" width="500">
-	<figcaption>示例</figcaption>
+	<img src="./outputs/Hello.hello-icfg.dot.png" alt="example" width="500">
 </figure>
 
 ## Use
